@@ -395,7 +395,7 @@ public class Behaviour implements ISearchActivity {
         mMenuButton.setOnClickListener(v -> {
             Context ctx = v.getContext();
             ListPopup menu = getMenuPopup(ctx);
-            TBApplication.behaviour(ctx).registerPopup(menu);
+            registerPopup(menu);
             menu.showCenter(v);
         });
         mMenuButton.setOnLongClickListener(v -> {
@@ -404,7 +404,7 @@ public class Behaviour implements ISearchActivity {
 
             // check if menu contains elements and if yes show it
             if (!menu.getAdapter().isEmpty()) {
-                TBApplication.behaviour(ctx).registerPopup(menu);
+                registerPopup(menu);
                 menu.show(v, 0f);
                 return true;
             }
@@ -422,7 +422,7 @@ public class Behaviour implements ISearchActivity {
 
             // check if menu contains elements and if yes show it
             if (!menu.getAdapter().isEmpty()) {
-                TBApplication.behaviour(ctx).registerPopup(menu);
+                registerPopup(menu);
                 menu.show(v);
                 return true;
             }
@@ -1406,6 +1406,14 @@ public class Behaviour implements ISearchActivity {
                 return launchActionEntry("show/history/adaptive");
             case "showUntagged":
                 return launchActionEntry("show/untagged");
+            case "showTagsMenu": {
+                Context ctx = mLauncherButton.getContext();
+                ListPopup menu = TBApplication.tagsHandler(ctx).getTagsMenu(ctx);
+                registerPopup(menu);
+                menu.show(mLauncherButton);
+
+            }
+            return true;
             case "runApp": {
                 String runApp = mPref.getString(source + "-app-to-run", null);
                 if (runApp != null)
